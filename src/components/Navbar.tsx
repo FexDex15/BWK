@@ -1,142 +1,129 @@
 import { useState } from "react";
+
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+} from "../components/ui/navigation-menu";
+
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "../components/ui/sheet";
 
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { buttonVariants } from "./ui/button";
 import { Menu } from "lucide-react";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+
 import { ModeToggle } from "./mode-toggle";
 import { LogoIcon } from "./Icons";
 
-interface RouteProps {
-  href: string;
-  label: string;
+import { Page } from "../App";
+
+interface NavbarProps {
+  onNavigate: (page: Page) => void;
 }
 
-const routeList: RouteProps[] = [
-  {
-    href: "#features",
-    label: "Features",
-  },
-  {
-    href: "#testimonials",
-    label: "Testimonials",
-  },
-  {
-    href: "#pricing",
-    label: "Pricing",
-  },
-  {
-    href: "#faq",
-    label: "FAQ",
-  },
+/* ✅ Rutas */
+const routeList: { page: Page; label: string }[] = [
+  { page: "home", label: "Home" },
+  { page: "music", label: "Music" },
+  { page: "biography", label: "Biography" },
+  { page: "snippets", label: "Snippets" },
+  { page: "soundcloud", label: "SoundCloud" },
+  { page: "songslore", label: "Songs Lore" },
+  { page: "about", label: "About" },
 ];
 
-export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+export const Navbar = ({ onNavigate }: NavbarProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
-      <NavigationMenu className="mx-auto">
-        <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between ">
-          <NavigationMenuItem className="font-bold flex">
-            <a
-              rel="noreferrer noopener"
-              href="/"
-              className="ml-2 font-bold text-xl flex"
+    <header className="sticky top-0 z-50 w-full">
+      {/* Fondo */}
+      <div className="absolute inset-0 bg-[#020617]/70 backdrop-blur-xl border-b border-blue-400/10" />
+
+      <NavigationMenu className="relative z-10 mx-auto">
+        <NavigationMenuList className="container h-16 px-4 w-full flex items-center justify-between">
+          
+          {/* Logo */}
+          <NavigationMenuItem>
+            <button
+              onClick={() => onNavigate("home")}
+              className="flex items-center gap-2 text-lg font-semibold text-white/85 hover:text-white transition"
             >
               <LogoIcon />
-              BWU - Fan Page
-            </a>
+              BoyWithUke
+            </button>
           </NavigationMenuItem>
 
-          {/* mobile */}
-          <span className="flex md:hidden">
+          {/* Mobile */}
+          <div className="flex md:hidden items-center gap-2">
             <ModeToggle />
 
-            <Sheet
-              open={isOpen}
-              onOpenChange={setIsOpen}
-            >
-              <SheetTrigger className="px-2">
-                <Menu
-                  className="flex md:hidden h-5 w-5"
-                  onClick={() => setIsOpen(true)}
-                >
-                  <span className="sr-only">Menu Icon</span>
-                </Menu>
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger className="p-2 rounded-full hover:bg-white/5 transition">
+                <Menu className="h-5 w-5 text-white/80" />
               </SheetTrigger>
 
-              <SheetContent side={"left"}>
+              <SheetContent
+                side="right"
+                className="bg-[#020617]/95 backdrop-blur-xl border-l border-blue-400/20"
+              >
                 <SheetHeader>
-                  <SheetTitle className="font-bold text-xl">
-                    Shadcn/React
+                  <SheetTitle className="text-white/90">
+                    BoyWithUke
                   </SheetTitle>
                 </SheetHeader>
-                <nav className="flex flex-col justify-center items-center gap-2 mt-4">
-                  {routeList.map(({ href, label }: RouteProps) => (
-                    <a
-                      rel="noreferrer noopener"
+
+                <nav className="flex flex-col gap-3 mt-6">
+                  {routeList.map(({ page, label }) => (
+                    <button
                       key={label}
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className={buttonVariants({ variant: "ghost" })}
+                      onClick={() => {
+                        onNavigate(page);
+                        setIsOpen(false);
+                      }}
+                      className="text-left text-white/70 hover:text-white transition px-3 py-2 rounded-lg hover:bg-white/5"
                     >
                       {label}
-                    </a>
+                    </button>
                   ))}
-                  <a
-                    rel="noreferrer noopener"
-                    href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-                    target="_blank"
-                    className={`w-[110px] border ${buttonVariants({
-                      variant: "secondary",
-                    })}`}
-                  >
-                    <GitHubLogoIcon className="mr-2 w-5 h-5" />
-                    Github
-                  </a>
+
+                  <div className="mt-6 border-t border-white/10 pt-4">
+                    <button
+                      disabled
+                      className="flex items-center gap-2 text-white/40 cursor-not-allowed"
+                    >
+                      <GitHubLogoIcon className="w-5 h-5" />
+                      Social (soon)
+                    </button>
+                  </div>
                 </nav>
               </SheetContent>
             </Sheet>
-          </span>
+          </div>
 
-          {/* desktop */}
-          <nav className="hidden md:flex gap-2">
-            {routeList.map((route: RouteProps, i) => (
-              <a
-                rel="noreferrer noopener"
-                href={route.href}
-                key={i}
-                className={`text-[17px] ${buttonVariants({
-                  variant: "ghost",
-                })}`}
+          {/* Desktop */}
+          <nav className="hidden md:flex gap-6">
+            {routeList.map(({ page, label }) => (
+              <button
+                key={label}
+                onClick={() => onNavigate(page)}
+                className="text-white/70 hover:text-white transition text-sm relative group"
               >
-                {route.label}
-              </a>
+                {label}
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-blue-400 transition-all group-hover:w-full" />
+              </button>
             ))}
           </nav>
 
-          <div className="hidden md:flex gap-2">
-            <a
-              rel="noreferrer noopener"
-              href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-              target="_blank"
-              className={`border ${buttonVariants({ variant: "secondary" })}`}
-            >
-              <GitHubLogoIcon className="mr-2 w-5 h-5" />
-              Github
-            </a>
-
+          <div className="hidden md:flex items-center gap-3">
+            <button disabled className="text-white/40 cursor-not-allowed">
+              <GitHubLogoIcon className="w-5 h-5" />
+            </button>
             <ModeToggle />
           </div>
         </NavigationMenuList>

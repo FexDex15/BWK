@@ -123,3 +123,103 @@
     @apply bg-background text-foreground;
   }
 }
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spinSlow {
+  animation: spinSlow 6s linear infinite;
+}
+.eq-bar {
+  width: 4px;
+  background: linear-gradient(to top, #22d3ee, #ec4899);
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.eq-bar:nth-child(2) { animation-delay: .1s }
+.eq-bar:nth-child(3) { animation-delay: .2s }
+.eq-bar:nth-child(4) { animation-delay: .3s }
+.eq-bar:nth-child(5) { animation-delay: .4s }
+
+@keyframes bounce {
+  0%,100% { height: 20% }
+  50% { height: 100% }
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(14,165,233,0.6);
+  border-radius: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(14,165,233,0.8);
+}
+
+
+
+
+@keyframes flicker {
+  0%   { opacity: 0.82; filter: drop-shadow(0 0 8px rgba(255,80,40,0.30)); }
+  25%  { opacity: 0.90; filter: drop-shadow(0 0 16px rgba(255,110,50,0.45)); }
+  50%  { opacity: 0.86; filter: drop-shadow(0 0 10px rgba(255,90,45,0.35)); }
+  75%  { opacity: 0.92; filter: drop-shadow(0 0 18px rgba(255,120,60,0.5)); }
+  100% { opacity: 0.82; filter: drop-shadow(0 0 8px rgba(255,80,40,0.30)); }
+}
+
+.neon-line {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: #b300ff;
+  box-shadow:
+    0 0 8px #b300ff,
+    0 0 20px #b300ff,
+    0 0 40px #b300ff;
+}
+
+.neon-line.left {
+  left: 120px;
+}
+
+.neon-line.center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.neon-line.right {
+  right: 180px;
+}
+
+.neon-sign {
+  position: absolute;
+  top: 120px;
+  right: 100px;
+  font-size: 88px;
+  font-weight: 900;
+  letter-spacing: 10px;
+  color: #ff2f00;
+  padding: 20px 60px;
+  border: 6px solid #00bfff;
+  border-radius: 25px;
+  background: rgba(0,0,0,0.6);
+  text-shadow:
+    0 0 10px #ff2f00,
+    0 0 20px #ff2f00,
+    0 0 40px #ff2f00,
+    0 0 60px #ff2f00;
+  box-shadow:
+    0 0 15px #00bfff,
+    0 0 30px #00bfff,
+    0 0 60px #00bfff;
+  animation: flicker 2s infinite;
+}

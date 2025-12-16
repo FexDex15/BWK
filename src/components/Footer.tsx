@@ -2,166 +2,95 @@ import { LogoIcon } from "./Icons";
 
 export const Footer = () => {
   return (
-    <footer id="footer">
-      <hr className="w-11/12 mx-auto" />
+    <footer id="footer" className="relative mt-32 overflow-hidden">
+      {/* Fondo */}
+      <div className="absolute inset-0 bg-[#020617]" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 0%, rgba(96,165,250,0.25), rgba(2,6,23,0.95) 70%)",
+        }}
+      />
 
-      <section className="container py-20 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-8">
+      {/* Glow superior */}
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-500/25 blur-[150px] rounded-full" />
+
+      {/* Divider */}
+      <hr className="relative z-10 w-11/12 mx-auto border-blue-400/20" />
+
+      {/* Contenido */}
+      <section className="relative z-10 container py-20 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-x-12 gap-y-10 text-white/70">
+        
+        {/* Logo */}
         <div className="col-span-full xl:col-span-2">
           <a
-            rel="noreferrer noopener"
             href="/"
-            className="font-bold text-xl flex"
+            className="flex items-center gap-3 font-semibold text-xl text-white/85 hover:text-white transition"
           >
             <LogoIcon />
-            ShadcnUI/React
+            BoyWithUke
+          </a>
+
+          <p className="mt-4 max-w-sm text-sm text-white/50 leading-relaxed">
+            Music, thoughts and feelings shared by fans.
+          </p>
+        </div>
+
+        {/* Redes BoyWithUke */}
+        <div className="flex flex-col gap-2">
+          <h3 className="font-semibold text-sm uppercase tracking-wide text-white/80">
+            BoyWithUke
+          </h3>
+
+          <a href="#" className="text-sm opacity-60 hover:opacity-100 transition">
+            Spotify
+          </a>
+          <a href="#" className="text-sm opacity-60 hover:opacity-100 transition">
+            YouTube
+          </a>
+          <a href="#" className="text-sm opacity-60 hover:opacity-100 transition">
+            Instagram
           </a>
         </div>
 
+        {/* Tus redes (placeholder) */}
         <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Follow US</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Github
-            </a>
-          </div>
+          <h3 className="font-semibold text-sm uppercase tracking-wide text-white/60">
+            Contact
+          </h3>
 
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Twitter
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Dribbble
-            </a>
-          </div>
+          <span className="text-sm text-white/40">—</span>
+          <span className="text-sm text-white/40">—</span>
+          <span className="text-sm text-white/40">—</span>
         </div>
 
+        {/* Extra 1 */}
         <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Platforms</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Web
-            </a>
-          </div>
+          <h3 className="font-semibold text-sm uppercase tracking-wide text-white/60">
+            Explore
+          </h3>
 
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Mobile
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Desktop
-            </a>
-          </div>
+          <span className="text-sm text-white/40">—</span>
+          <span className="text-sm text-white/40">—</span>
+          <span className="text-sm text-white/40">—</span>
         </div>
 
+        {/* Extra 2 */}
         <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">About</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Features
-            </a>
-          </div>
+          <h3 className="font-semibold text-sm uppercase tracking-wide text-white/60">
+            More
+          </h3>
 
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Pricing
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              FAQ
-            </a>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Community</h3>
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Youtube
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Discord
-            </a>
-          </div>
-
-          <div>
-            <a
-              rel="noreferrer noopener"
-              href="#"
-              className="opacity-60 hover:opacity-100"
-            >
-              Twitch
-            </a>
-          </div>
+          <span className="text-sm text-white/40">—</span>
+          <span className="text-sm text-white/40">—</span>
+          <span className="text-sm text-white/40">—</span>
         </div>
       </section>
 
-      <section className="container pb-14 text-center">
-        <h3>
-          &copy; 2024 Landing page made by{" "}
-          <a
-            rel="noreferrer noopener"
-            target="_blank"
-            href="https://www.linkedin.com/in/leopoldo-miranda/"
-            className="text-primary transition-all border-primary hover:border-b-2"
-          >
-            Leo Miranda
-          </a>
-        </h3>
+      {/* Bottom */}
+      <section className="relative z-10 container pb-14 text-center text-white/40 text-sm">
+        Fan-made project • Not affiliated with BoyWithUke . Even if I wanted it
       </section>
     </footer>
   );
