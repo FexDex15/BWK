@@ -1,5 +1,5 @@
 // App.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 import { Navbar } from "./components/Navbar";
@@ -12,12 +12,16 @@ import { Biography } from "./components/Biography";
 import { AboutPage } from "./components/AboutPage";
 import { Snippets } from "./components/Snippets";
 import { SoundCloud } from "./components/SoundCloud";
-import { SongsLore } from "./components/songslore"; // ✅ CORREGIDO
+import { SongsLore } from "./components/songslore";
+import { Merch } from "./components/Merch";
+import Outfits from "./components/Outfits";
+
 
 import { PlayerProvider } from "./components/PlayerContext";
 import { TurntablePlayer } from "./components/TurntablePlayer";
 
-/* ✅ Tipo Page global */
+/* ================= TIPOS ================= */
+
 export type Page =
   | "home"
   | "music"
@@ -25,11 +29,20 @@ export type Page =
   | "about"
   | "snippets"
   | "soundcloud"
-  | "songslore";
+  | "songslore"
+  | "merch"
+  | "outfits";
 
-/* ================= CONTENIDO PRINCIPAL ================= */
+/* ================= CONTENIDO ================= */
+
 function AppContent() {
   const [page, setPage] = useState<Page>("home");
+
+  // 🔁 Sincroniza hash al cargar / recargar
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "") as Page;
+    if (hash) setPage(hash);
+  }, []);
 
   const handleNavigate = (next: Page) => {
     setPage(next);
@@ -47,6 +60,8 @@ function AppContent() {
       {page === "soundcloud" && <SoundCloud />}
       {page === "songslore" && <SongsLore />}
       {page === "about" && <AboutPage />}
+      {page === "merch" && <Merch />}
+      {page === "outfits" && <Outfits />}
 
       <Footer />
       <ScrollToTop />
@@ -54,7 +69,8 @@ function AppContent() {
   );
 }
 
-/* ================= APP ROOT ================= */
+/* ================= ROOT ================= */
+
 export default function App() {
   return (
     <PlayerProvider>

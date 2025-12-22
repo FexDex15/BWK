@@ -35,6 +35,9 @@ const routeList: { page: Page; label: string }[] = [
   { page: "soundcloud", label: "SoundCloud" },
   { page: "songslore", label: "Songs Lore" },
   { page: "about", label: "About" },
+  {page: "merch", label:"Merch"},
+  {page: "outfits", label:'Outfits'}
+
 ];
 
 export const Navbar = ({ onNavigate }: NavbarProps) => {

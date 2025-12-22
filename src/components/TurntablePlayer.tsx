@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { usePlayer } from "./PlayerContext";
 import { TRACKS } from "../components/tracks";
+import { RandomButton } from "./RandomButton";
+
+
 
 export const TurntablePlayer = () => {
   const {
@@ -142,16 +145,20 @@ export const TurntablePlayer = () => {
               <span>{formatTime(duration)}</span>
             </div>
 
-            {/* Botón Play */}
-            <div className="flex justify-center mt-4 mb-4">
-              <button
-                onClick={togglePlay}
-                className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-blue-500 to-yellow-400 text-black text-2xl sm:text-3xl flex items-center justify-center shadow-[0_0_20px_rgba(0,181,204,0.7)] hover:scale-110 transition"
-              >
-                {playing ? "⏸" : "▶"}
-              </button>
-            </div>
+      {/* Controles */}
+<div className="flex justify-center gap-4 mt-4 mb-4">
+  <button
+    onClick={togglePlay}
+    className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br from-blue-500 to-yellow-400 text-black text-2xl sm:text-3xl flex items-center justify-center shadow-[0_0_20px_rgba(0,181,204,0.7)] hover:scale-110 transition"
+  >
+    {playing ? "⏸" : "▶"}
+  </button>
 
+  {/* 🔀 RANDOM */}
+  <RandomButton />
+</div>
+
+            
             {/* ================= BUSCADOR ================= */}
             <div className="relative w-full mt-3">
               <input
