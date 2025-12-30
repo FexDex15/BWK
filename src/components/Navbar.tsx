@@ -1,3 +1,5 @@
+// Si necesitas usar CommunityBoard directamente en el Navbar, importa aquí:
+// import CommunityBoard from "./CommunityBoard";
 import { useState } from "react";
 
 import {
@@ -36,7 +38,8 @@ const routeList: { page: Page; label: string }[] = [
   { page: "songslore", label: "Songs Lore" },
   { page: "about", label: "About" },
   {page: "merch", label:"Merch"},
-  {page: "outfits", label:'Outfits'}
+  {page: "outfits", label:'Outfits'},
+  {page: "community", label: "Community"},
 
 ];
 

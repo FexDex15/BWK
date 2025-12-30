@@ -19,6 +19,7 @@ import Outfits from "./components/Outfits";
 import { PlayerProvider } from "./components/PlayerContext";
 import { TurntablePlayer } from "./components/TurntablePlayer";
 import CommunityChat from "./components/CommunityChat";
+import CommunityBoard from "./components/CommunityBoard";
 
 /* ================= TIPOS ================= */
 
@@ -32,7 +33,8 @@ export type Page =
   | "songslore"
   | "merch"
   | "outfits"
-  | "community"; // ← agregado
+  | "community"
+  | "communityboard";
 
 /* ================= CONTENIDO ================= */
 
@@ -63,7 +65,8 @@ function AppContent() {
       {page === "about" && <AboutPage />}
       {page === "merch" && <Merch />}
       {page === "outfits" && <Outfits />}
-      {page === "community" && <CommunityChat />} {/* ← nueva sección */}
+      {page === "community" && <CommunityBoard />}
+      {page === "communityboard" && <CommunityBoard />}
 
       <Footer />
       <ScrollToTop />

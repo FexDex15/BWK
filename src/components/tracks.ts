@@ -147,7 +147,7 @@ export const TRACKS: Track[] = [
     album: "Fever Dreams",
     cover: "/imgs/Fever.jpg",
     versions: {
-      autotune: "/audio/Shy.mp3",
+      autotune: "/audio/shy.mp3",
     },
   },
       {

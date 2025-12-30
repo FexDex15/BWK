@@ -1,13 +1,5 @@
-// src/components/CommunityChat.tsx
-import { useEffect, useRef, useState } from "react";
-import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  signOut,
-  User,
-} from "firebase/auth";
+
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   addDoc,
   collection,
@@ -15,117 +7,138 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  DocumentData,
 } from "firebase/firestore";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth, db } from "../../firebase";
+import ChatBox from "./ChatBox";
+import CommunityLayout from "./CommunityLayout";
+import UserMiniProfile from "./UserMiniProfile";
+import CommunitySidebar from "./CommunitySidebar";
+import { Message } from "./types";
 
 export default function CommunityChat() {
   const [user, setUser] = useState<User | null>(null);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [text, setText] = useState("");
-
+  const [replyTo, setReplyTo] = useState<Message | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  /* ---------------- AUTH ---------------- */
+  // AUTH: subscribe and clean up
   useEffect(() => {
-    return onAuthStateChanged(auth, setUser);
+    const unsub = onAuthStateChanged(auth, setUser);
+    return () => unsub();
   }, []);
 
-  /* ---------------- CHAT ---------------- */
+  // CHAT: subscribe to messages
   useEffect(() => {
-    const q = query(collection(db, "mensajes"), orderBy("date", "asc"));
-    return onSnapshot(q, (snap) => {
-      setMessages(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-      setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
-    });
-  }, []);
-
-  /* ---------------- ACTIONS ---------------- */
-  const loginEmail = async (e: any) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const pass = e.target.password.value;
-    await signInWithEmailAndPassword(auth, email, pass);
-  };
-
-  const loginGoogle = async () => {
-    await signInWithPopup(auth, new GoogleAuthProvider());
-  };
-
-  const sendMessage = async () => {
-    if (!text.trim() || !user) return;
-    await addDoc(collection(db, "mensajes"), {
-      text,
-      from: user.email,
-      fromUid: user.uid,
-      to: "public",
-      date: serverTimestamp(),
-    });
-    setText("");
-  };
-
-  /* ---------------- UI ---------------- */
-  if (!user) {
-    return (
-      <form
-        onSubmit={loginEmail}
-        className="max-w-sm mx-auto mt-24 p-6 bg-black/70 rounded-xl space-y-3"
-      >
-        <h2 className="text-center text-cyan-400 text-xl">👋 Comunidad</h2>
-        <input name="email" type="email" placeholder="Correo" className="w-full p-2 rounded bg-gray-900 text-white" />
-        <input name="password" type="password" placeholder="Contraseña" className="w-full p-2 rounded bg-gray-900 text-white" />
-        <button className="w-full bg-gradient-to-r from-cyan-400 to-pink-400 p-2 rounded font-bold">
-          Entrar
-        </button>
-        <button type="button" onClick={loginGoogle} className="w-full bg-white text-black p-2 rounded font-bold">
-          Google
-        </button>
-      </form>
+    const q = query(
+      collection(db, "mensajes"),
+      orderBy("pinned", "desc"),
+      orderBy("date", "asc")
     );
-  }
+    const unsub = onSnapshot(q, (snap) => {
+      setMessages(
+        snap.docs.map((d) => {
+          const data = d.data() as DocumentData;
+          return {
+            id: d.id,
+            text: data.text ?? "",
+            from: data.from ?? "",
+            fromUid: data.fromUid ?? "",
+            date: data.date ?? null,
+            type: data.type ?? "text",
+            pinned: !!data.pinned,
+            edited: !!data.edited,
+            replyTo: data.replyTo ?? null,
+            reactions: data.reactions ?? {},
+            privateTo: data.privateTo ?? null,
+          } as Message;
+        })
+      );
+    });
+    return () => unsub();
+  }, []);
+
+  // SEND: memoized to avoid stale closure
+  const sendMessage = useCallback(async () => {
+    if (!text.trim() || !user) return;
+    const temp = text;
+    setText("");
+    setReplyTo(null);
+    await addDoc(collection(db, "mensajes"), {
+      text: temp,
+      from: user.displayName || user.email,
+      fromUid: user.uid,
+      date: serverTimestamp(),
+      type: "text",
+      replyTo: replyTo
+        ? {
+            id: replyTo.id,
+            text: replyTo.text,
+            from: replyTo.from,
+          }
+        : null,
+      reactions: {},
+      pinned: false,
+    });
+  }, [text, user, replyTo]);
+
+  if (!user) return null;
 
   return (
-    <section className="max-w-5xl mx-auto mt-6 bg-black/60 rounded-xl p-4 flex flex-col h-[80vh]">
-      <header className="text-cyan-400 text-center font-semibold">💬 Chat Público</header>
+    <CommunityLayout>
+      <div className="flex flex-1 gap-6 max-w-5xl mx-auto px-4">
+        {/* SIDEBAR */}
+        <aside className="hidden lg:block w-64 shrink-0">
+          <CommunitySidebar user={user} onLogout={() => signOut(auth)} />
+        </aside>
 
-      <div className="flex-1 overflow-y-auto space-y-2 p-2">
-        {messages.map(m => (
-          <div
-            key={m.id}
-            className={`p-2 rounded max-w-xs ${
-              m.fromUid === user.uid
-                ? "ml-auto bg-cyan-500/20"
-                : "bg-white/10"
-            }`}
-          >
-            <strong className="text-cyan-300 text-sm">{m.from}</strong>
-            {m.text.match(/\.(png|jpg|gif)$/i) ? (
-              <img src={m.text} className="rounded mt-1" />
-            ) : (
-              <p>{m.text}</p>
-            )}
+        {/* CHAT */}
+        <div className="flex flex-col flex-1 min-h-[75vh]">
+          {/* HEADER */}
+          <div className="py-4 shrink-0">
+            <UserMiniProfile user={user} />
           </div>
-        ))}
-        <div ref={bottomRef} />
-      </div>
 
-      <div className="flex gap-2">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="flex-1 bg-gray-900 p-2 rounded"
-          placeholder="Escribe..."
-        />
-        <button onClick={sendMessage} className="bg-gradient-to-r from-cyan-400 to-pink-400 px-4 rounded">
-          Enviar
-        </button>
-      </div>
+          {/* MENSAJES */}
+          <div className="flex-1 min-h-0">
+            <ChatBox
+              messages={messages}
+              currentUid={user.uid}
+              bottomRef={bottomRef}
+              onReply={setReplyTo}
+            />
+          </div>
 
-      <button
-        onClick={() => signOut(auth)}
-        className="text-red-400 text-sm mt-2 self-end"
-      >
-        Cerrar sesión
-      </button>
-    </section>
+          {/* REPLY */}
+          {replyTo && (
+            <div className="text-xs bg-black/30 p-2 text-cyan-300">
+              Respondiendo a {replyTo.from}: “{replyTo.text.slice(0, 40)}…”
+              <button
+                onClick={() => setReplyTo(null)}
+                className="ml-2 text-red-400"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* INPUT */}
+          <div className="flex gap-2 p-3 bg-black/20 backdrop-blur shrink-0">
+            <input
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Escribe algo…"
+              className="flex-1 rounded-xl px-4 py-2 bg-black/30 text-white"
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            />
+            <button onClick={sendMessage} className="px-4 btn">
+              ➤
+            </button>
+          </div>
+        </div>
+      </div>
+    </CommunityLayout>
   );
 }

@@ -1,19 +1,21 @@
- // src/firebase.ts
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCpfIpBsCfXWGqcUI14fs_0cTHii1n0x0o",
-  authDomain: "boywithuke-fanpage-82603.firebaseapp.com",
-  projectId: "boywithuke-fanpage-82603",
-  storageBucket: "boywithuke-fanpage-82603.firebasestorage.app",
-  messagingSenderId: "1041418477438",
-  appId: "1:1041418477438:web:bbf2f0d5dd6fdd2aee1d2f",
+  apiKey: "AIzaSyCbkWGIoAnNUjfU23ooVZeGK0jDxcIdKyQ",
+  authDomain: "boywithuke-fanpage-4bcc5.firebaseapp.com",
+  projectId: "boywithuke-fanpage-4bcc5",
+  storageBucket: "boywithuke-fanpage-4bcc5.firebasestorage.app",
+  messagingSenderId: "562286447256",
+  appId: "1:562286447256:web:4b7aba633308499a4a5eed",
+  measurementId: "G-66JB2X1YP0"
 };
 
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 export const storage = getStorage(app);
