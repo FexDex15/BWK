@@ -1,0 +1,64 @@
+/*
+  Custom cursor styling for CommunityBoard
+  - Rotates the cursor image to match the default angle
+  - Reduces size
+  - Adds glitch effect using multiple overlays and keyframes
+*/
+
+.custom-glitch-cursor {
+  cursor: url('/imgs/CurzorUKE-glitch1.png') 8 2, auto;
+}
+
+@media (pointer: fine) {
+  .custom-glitch-cursor {
+    cursor: url('/imgs/CurzorUKE-glitch1.png') 8 2, auto;
+  }
+}
+
+/* Glitch effect for the cursor overlay (for demo, use on a div or canvas) */
+/* Increased size and slower, bursty glitch effect */
+.glitch-cursor-effect {
+  position: absolute;
+  pointer-events: none;
+  z-index: 99999;
+  width: 40px;
+  height: 40px;
+  transform: rotate(-35deg) scale(1);
+  animation: glitch-cursor 4s steps(1, end) infinite;
+}
+.glitch-cursor-effect::before, .glitch-cursor-effect::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('/imgs/CurzorUKE.png') no-repeat center/contain;
+  opacity: 0.7;
+}
+.glitch-cursor-effect::before {
+  left: 2px;
+  top: -2px;
+  filter: drop-shadow(0 0 2px #00eaff) hue-rotate(30deg);
+  animation: glitch-cursor-before 4s steps(1, end) infinite;
+}
+.glitch-cursor-effect::after {
+  left: -2px;
+  top: 2px;
+  filter: drop-shadow(0 0 2px #ffe066) hue-rotate(-30deg);
+  animation: glitch-cursor-after 4s steps(1, end) infinite;
+}
+@keyframes glitch-cursor {
+  0%, 90% { transform: rotate(-35deg) scale(1) translate(0,0); }
+  91% { transform: rotate(-35deg) scale(1) translate(-2px,2px); }
+  92% { transform: rotate(-35deg) scale(1) translate(2px,-2px); }
+  93% { transform: rotate(-35deg) scale(1) translate(-3px,1px); }
+  94% { transform: rotate(-35deg) scale(1) translate(3px,-1px); }
+  95%, 100% { transform: rotate(-35deg) scale(1) translate(0,0); }
+}
+@keyframes glitch-cursor-before {
+  0%, 90% { opacity: 0.7; }
+  91%, 100% { opacity: 0.3; }
+}
+@keyframes glitch-cursor-after {
+  0%, 90% { opacity: 0.7; }
+  91%, 100% { opacity: 0.2; }
+}

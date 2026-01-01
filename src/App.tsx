@@ -19,7 +19,7 @@ import Outfits from "./components/Outfits";
 import { PlayerProvider } from "./components/PlayerContext";
 import { TurntablePlayer } from "./components/TurntablePlayer";
 import CommunityChat from "./components/CommunityChat";
-import CommunityBoard from "./components/CommunityBoard";
+import CommunityBoard from "./components/board/CommunityBoard";
 
 /* ================= TIPOS ================= */
 
@@ -65,7 +65,7 @@ function AppContent() {
       {page === "about" && <AboutPage />}
       {page === "merch" && <Merch />}
       {page === "outfits" && <Outfits />}
-      {page === "community" && <CommunityBoard />}
+      {page === "community" && <CommunityChat />}
       {page === "communityboard" && <CommunityBoard />}
 
       <Footer />

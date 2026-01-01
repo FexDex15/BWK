@@ -1,16 +1,29 @@
-import { Timestamp } from "firebase/firestore";
+// Tipos unificados y extensibles para elementos del board
+export type BoardItemType = "draw" | "text" | "image" | "sticker";
 
-export type BoardItemType =
-  | "draw"
-  | "text"
-  | "image"
-  | "gif"
-  | "sticker";
+export interface DrawData {
+  points: number[];
+  color: string;
+  strokeWidth: number;
+  brushType?: string;
+  pixelSize?: number;
+}
 
-export interface BoardItem {
+export interface TextData {
+  text: string;
+}
+
+export interface ImageData {
+  src: string;
+}
+
+export interface StickerData {
+  src: string;
+}
+
+export interface BoardItemBase {
   id: string;
   type: BoardItemType;
-  data: any;
   x: number;
   y: number;
   scale: number;
@@ -18,5 +31,11 @@ export interface BoardItem {
   authorId: string;
   color?: string;
   layer: string;
-  createdAt: Timestamp;
+  createdAt: Date;
 }
+
+export type BoardItem =
+  | (BoardItemBase & { type: "draw"; data: DrawData })
+  | (BoardItemBase & { type: "text"; data: TextData })
+  | (BoardItemBase & { type: "image"; data: ImageData })
+  | (BoardItemBase & { type: "sticker"; data: StickerData });
