@@ -11,6 +11,7 @@ export function useBoardSync(
   elements: BoardItem[],
   setElements: (e: BoardItem[]) => void
 ) {
+  console.log("Syncing board...", elements);
   useEffect(() => {
     const ref = collection(db, "board");
 

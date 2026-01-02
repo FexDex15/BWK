@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
+import React, { useRef, useState} from "react";
 import { Stage, Layer, Line, Text, Image as KonvaImage, Group } from "react-konva";
 import useImage from "use-image";
 import type { BoardItem } from "./types";
@@ -41,7 +41,7 @@ export default function BoardCanvas({ items, onDrawEnd, tool, color, lineWidth, 
   const [stageScale, setStageScale] = useState(1);
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   const stageRef = useRef<any>(null);
-
+  console.log(pixelSize);
   // Responsive: usar 100vw x 100vh en móvil/tablet, 1200x700 en desktop
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
   const BOARD_WIDTH = isDesktop ? 1200 : window.innerWidth;

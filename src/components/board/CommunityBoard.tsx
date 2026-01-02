@@ -3,7 +3,6 @@ import { useBoardStore } from "./boardStore";
 import { uid } from "./board.utils";
 import BoardCanvas from "./BoardCanvas";
 import { FiEdit3, FiTrash2, FiImage, FiSmile, FiType, FiGrid } from "react-icons/fi";
-import type { BoardItem } from "./types";
 
 const STICKERS = [
   "/imgs/Firstuke2.png",
@@ -103,6 +102,8 @@ const CommunityBoard: React.FC = () => {
       clearBoard();
     }
   };
+
+  console.log(handleClear, pixelSize);
 
   // --- Herramientas avanzadas ---
   // Click en el canvas para colocar texto, sticker o imagen

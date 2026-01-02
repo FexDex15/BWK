@@ -36,6 +36,8 @@ export const TurntablePlayer = () => {
     setShowResults(true);
   };
 
+  console.log(randomResults, handleClickSearch);
+
   return (
     <>
       {/* ================= MINI PLAYER ================= */}

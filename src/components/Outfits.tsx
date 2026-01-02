@@ -36,6 +36,7 @@ export default function Outfits() {
   /* ======== Konami Code ======== */
   const KONAMI = ["up","up","down","down","left","right","left","right","b","a"];
   const [konamiIndex, setKonamiIndex] = useState(0);
+  console.log(konamiIndex)
 
   const unlockSecret = () => {
     if (secretUnlocked) return;
